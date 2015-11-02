@@ -1,19 +1,15 @@
-var sortList=["画像","動画","ニュース"];
+var sortList={"画像":null,"動画":null,"ニュース":null};
 
-var data = document.querySelectorAll('a.q.qs');
-var list = [].slice.call(data);
+//window.onload = function() {
+  var data = document.querySelectorAll('a.q.qs');
+  var list = [].slice.call(data);
 
-list.sort(function(a,b){
-  var ai = sortList.indexOf(a.innerText);
-  var bi = sortList.indexOf(b.innerText);
-  if(ai>bi){
-    return -1;
-  }else{
-    return 1;
-  }
-});
-list.forEach(function(d,i){
-  var text=data.item(i).innerText;
-  data.item(i).innerText=d.innerText;
-  d.innerText=text;
-});
+  list.forEach(function(d){
+      sortList[d.innerText]=d.href;
+  });
+
+  Object.keys(sortList).forEach(function(d,i){
+    data.item(i).href=sortList[d];
+    data.item(i).innerText=d;
+  });
+//};

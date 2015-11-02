@@ -1,9 +1,9 @@
 {
 	"manifest_version": 2,
-	"name": "myEx",
+	"name": "GoogleSerchTabSorter",
 	"version": "1.0",
 
-	"description": "My first extension.",
+	"description": "Google検索の順不同のタブの位置を固定にするやつ",
 	"content_scripts": [
 		{
 			"matches": ["http://*.google.co.jp/*","https://*.google.co.jp/*"],
