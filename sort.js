@@ -22,6 +22,7 @@ window.onload = function () {
         data.item(i).innerText = d;
     });
 
-    div.innerHTML = a.innerText;
-    div.classList.add('hdtb-msel');
+    var selectTab = document.querySelector('a.q.qs[href=""]').parentNode;
+    selectTab.classList.add('hdtb-msel');
+    selectTab.innerHTML = selectTab.innerText;
 };
