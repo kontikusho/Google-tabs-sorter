@@ -1,15 +1,27 @@
-var sortList={"画像":null,"動画":null,"ニュース":null};
+window.onload = function () {
+    var sortList = {"ウェブ": null, "画像": null, "動画": null, "ニュース": null};
+    var a = document.createElement('a');
+    a.className = 'q qs';
+    var div = document.querySelector('div.hdtb-mitem.hdtb-msel.hdtb-imb');
+    a.innerText = div.innerText;
+    div.innerText = '';
+    div.appendChild(a);
+    div.classList.remove('hdtb-msel');
 
-window.onload = function() {
-  var data = document.querySelectorAll('a.q.qs');
-  var list = [].slice.call(data);
+    var data = document.querySelectorAll('a.q.qs');
+    var list = [].slice.call(data);
 
-  list.forEach(function(d){
-      sortList[d.innerText]=d.href;
-  });
+    list.forEach(function (d) {
+        sortList[d.innerText] = d.href;
+    });
 
-  Object.keys(sortList).forEach(function(d,i){
-    data.item(i).href=sortList[d];
-    data.item(i).innerText=d;
-  });
+    Object.keys(sortList).forEach(function (d, i) {
+        if (!data.item(i))
+            return;
+        data.item(i).href = sortList[d];
+        data.item(i).innerText = d;
+    });
+
+    div.innerHTML = a.innerText;
+    div.classList.add('hdtb-msel');
 };
