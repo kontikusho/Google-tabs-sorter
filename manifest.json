@@ -8,7 +8,7 @@
 		{
 			"matches": ["http://*.google.co.jp/*","https://*.google.co.jp/*"],
 			"js": [ "sort.js"],
-			"run_at": "document_end"
+			"run_at": "document_start"
 		}
 	]
 }
