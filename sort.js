@@ -1,4 +1,14 @@
-window.onload = function () {
+(function () {
+    var interval = setInterval(function () {
+        var moreInfo = document.querySelector('#hdtb-more-mn');
+        if (moreInfo && moreInfo.children.length > 0) {
+            clearInterval(interval);
+            tabSort();
+        }
+    }, 10);
+})();
+
+var tabSort = function () {
     var sortList = {"ウェブ": null, "画像": null, "動画": null, "ニュース": null};
     var a = document.createElement('a');
     a.className = 'q qs';
