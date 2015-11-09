@@ -1,6 +1,6 @@
 var sortList={"画像":null,"動画":null,"ニュース":null};
 
-//window.onload = function() {
+window.onload = function() {
   var data = document.querySelectorAll('a.q.qs');
   var list = [].slice.call(data);
 
@@ -12,4 +12,4 @@ var sortList={"画像":null,"動画":null,"ニュース":null};
     data.item(i).href=sortList[d];
     data.item(i).innerText=d;
   });
-//};
+};

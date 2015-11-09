@@ -7,7 +7,8 @@
 	"content_scripts": [
 		{
 			"matches": ["http://*.google.co.jp/*","https://*.google.co.jp/*"],
-			"js": [ "sort.js"]
+			"js": [ "sort.js"],
+			"run_at": "document_end"
 		}
 	]
 }
