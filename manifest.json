@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "GoogleSerchTabSorter",
-	"version": "0.1",
+	"version": "0.8",
 
 	"description": "Google検索の順不同のタブの位置を固定にするやつ",
 	"content_scripts": [

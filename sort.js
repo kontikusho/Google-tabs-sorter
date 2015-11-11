@@ -5,6 +5,19 @@
         if (moreInfo && moreInfo.children.length > 0) {
             clearInterval(interval);
             tabSort();
+            var time;
+            var input = document.getElementById('lst-ib');
+            input.onblur = input.oncompositionend = input.oncompositionstart = input.oncut = input.onfocus = input.oninput = input.onkeydown = input.onkeypress = input.onkeyup = input.onmousedown = input.onmouseup = input.onpaste = input.onselect = function () {
+                if (time)
+                    clearTimeout(time);
+                time = setTimeout(tabSort, 100);
+            };
+            var search = document.querySelector('.lsb');
+            search.onclick = function () {
+                if (time)
+                    clearTimeout(time);
+                time = setTimeout(tabSort, 100);
+            };
         }
     }, 10);
 })();
@@ -15,6 +28,8 @@ var tabSort = function () {
     var a = document.createElement('a');
     a.className = 'q qs';
     var div = document.querySelector('div.hdtb-mitem.hdtb-msel.hdtb-imb');
+    if (!div)
+        return;
     a.innerText = div.innerText;
     div.innerText = '';
     div.appendChild(a);
@@ -38,7 +53,10 @@ var tabSort = function () {
     });
 
     // 一旦他のと同じ扱いにするために未選択状態にしたものを選択状態に戻す
-    var selectTab = document.querySelector('a.q.qs[href=""]').parentNode;
+    var selectTab = document.querySelector('a.q.qs[href=""]');
+    if (!selectTab)
+        return;
+    selectTab = selectTab.parentNode;
     selectTab.classList.add('hdtb-msel');
     selectTab.innerHTML = selectTab.innerText;
 };
