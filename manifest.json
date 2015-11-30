@@ -1,8 +1,9 @@
 {
-	"manifest_version": 2,
-	"name": "GoogleSerchTabSorter",
-	"version": "0.8",
+  "manifest_version": 2,
+  "name": "GoogleSerchTabSorter",
+  "version": "1.0",
 
+<<<<<<< HEAD
 	"description": "Google検索の順不同のタブの位置を固定にするやつ",
 	"content_scripts": [
 		{
@@ -11,4 +12,16 @@
 			"run_at": "document_start"
 		}
 	]
+=======
+  "description": "Google検索の順不同のタブの位置を固定にするやつ",
+  "content_scripts": [{
+    "matches": ["http://*.google.co.jp/*", "https://*.google.co.jp/*"],
+    "js": ["sort.js"],
+    "run_at": "document_start"
+  }],
+  "permissions": [
+    "storage"
+  ],
+  "options_page": "option.html"
+>>>>>>> 1e597b0... issue-10
 }
