@@ -1,13 +1,14 @@
 // 設定の取得、初期化
 chrome.storage.local.get(function(data) {
-  var defaultSortList = {
-    "ウェブ": null,
-    "画像": null,
-    "動画": null,
-    "ニュース": null
-  };
+document.body.style.display='none';
+  var defaultSortList = [
+    "ウェブ",
+    "画像",
+    "動画",
+    "ニュース"
+  ];
   var sortList = data.sortList || defaultSortList;
-  chrome.storage.local.set(sortList, function() {});
+  chrome.storage.local.set({sortList:sortList}, function() {});
   // "もっと見る"タブの中身ができるまで待つ
   var interval = setInterval(function() {
     var moreInfo = document.querySelector('#hdtb-more-mn');
@@ -40,7 +41,6 @@ var setEevnt = function(sortList) {
   var event = function() {
     if (time)
       clearTimeout(time);
-    console.log("test");
     time = setTimeout(tabSort, 100, sortList);
   };
 }
@@ -62,24 +62,27 @@ var tabSort = function(sortList) {
   var data = document.querySelectorAll('a.q.qs');
   var list = [].slice.call(data);
 
-  // リンクテキストとリンクのオブジェクトを作る
-  list.forEach(function(d) {
-    sortList[d.innerText] = d.href;
+  // リストを作る
+  list.forEach(function(dom) {
+    var i=sortList.indexOf(dom.innerText==='すべて'?'ウェブ':dom.innerText);
+    i>=0?sortList[i]=dom:sortList.push(dom);
+    dom.href=dom.href||null;
   });
-
-  // オブジェクトのキー順に、リンクテキストとリンクを変更する
-  Object.keys(sortList).forEach(function(d, i) {
-    if (!data.item(i))
-      return;
-    data.item(i).href = sortList[d];
-    data.item(i).innerText = d;
+  list=list.map(function(d){
+    return d.parentNode;
+  });
+  list.forEach(function(d){
+    var data=sortList.shift();
+    if(typeof(data)!=="string")
+      d.appendChild(data);
   });
 
   // 一旦他のと同じ扱いにするために未選択状態にしたものを選択状態に戻す
-  var selectTab = document.querySelector('a.q.qs[href=""]');
+  var selectTab = document.querySelector('a.q.qs[href="null"]');
   if (!selectTab)
     return;
   selectTab = selectTab.parentNode;
   selectTab.classList.add('hdtb-msel');
   selectTab.innerHTML = selectTab.innerText;
+  document.body.style.display='';
 };
