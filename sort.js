@@ -1,6 +1,5 @@
 // 設定の取得、初期化
 chrome.storage.local.get(function(data) {
-document.body.style.display='none';
   var defaultSortList = [
     "ウェブ",
     "画像",
@@ -12,6 +11,10 @@ document.body.style.display='none';
   // "もっと見る"タブの中身ができるまで待つ
   var interval = setInterval(function() {
     var moreInfo = document.querySelector('#hdtb-more-mn');
+    var topNav = document.querySelector('#top_nav');
+    if (topNav) {
+      topNav.style.display='none';
+    }
     if (moreInfo && moreInfo.children.length > 0) {
       clearInterval(interval);
       setEevnt(sortList);
@@ -84,5 +87,7 @@ var tabSort = function(sortList) {
   selectTab = selectTab.parentNode;
   selectTab.classList.add('hdtb-msel');
   selectTab.innerHTML = selectTab.innerText;
-  document.body.style.display='';
+  var topNav = document.querySelector('#top_nav');
+  topNav.style.display= '';
+
 };
