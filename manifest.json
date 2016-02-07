@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "GoogleSerchTabSorter",
-  "version": "1.1",
+  "version": "1.2",
   "description": "Google検索の順不同のタブの位置を固定にするやつ",
   "content_scripts": [{
     "matches": ["http://*.google.co.jp/search*", "https://*.google.co.jp/search*"],
