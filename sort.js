@@ -21,6 +21,7 @@ chrome.storage.local.get(function(data) {
       tabSort(sortList);
     }
   }, 10);
+  setTimeout(function(){clearInterval(interval)},10000);
 });
 
 // イベントの設定
