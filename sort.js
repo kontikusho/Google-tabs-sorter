@@ -10,15 +10,16 @@ chrome.storage.local.get(function(data) {
   chrome.storage.local.set({sortList:sortList}, function() {});
   // "もっと見る"タブの中身ができるまで待つ
   var interval = setInterval(function() {
-    var moreInfo = document.querySelector('#hdtb-more-mn');
-    var topNav = document.querySelector('#top_nav');
-    if (topNav) {
-      topNav.style.display='none';
-    }
-    if (moreInfo && moreInfo.children.length > 0) {
-      clearInterval(interval);
-      setEevnt(sortList);
-      tabSort(sortList);
+    var list = document.querySelectorAll("g-dropdown-menu a.q.qs")
+    if (list.length > 0){
+        clearInterval(interval);
+        window.tablist = [].slice.call(document.querySelectorAll('#hdtb-msb a.q.qs')).map(function(item){
+            item.url = new URL(item.href);
+            return item;
+        });
+        console.log(tablist.map(function(item){
+            return item.url.searchParams.get("tbm")||(item.url.hostname.indexOf("map") != -1?"map":"all" )
+        }));
     }
   }, 10);
   setTimeout(function(){clearInterval(interval)},10000);
