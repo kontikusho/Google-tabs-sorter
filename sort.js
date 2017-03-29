@@ -1,26 +1,78 @@
 // 設定の取得、初期化
 chrome.storage.local.get(function(data) {
     var defaultSortList = [
-        "ウェブ",
-        "画像",
-        "動画",
-        "ニュース"
+        "all",
+        "isch",
+        "vid",
+        "nws",
+        "map"
     ];
-    var sortList = data.sortList || defaultSortList;
+    var sortList = defaultSortList;
     chrome.storage.local.set({
         sortList: sortList
     }, function() {});
     // "もっと見る"タブの中身ができるまで待つ
     var interval = setInterval(function() {
-        var moreInfo = document.querySelector('#hdtb-more-mn');
-        var topNav = document.querySelector('#top_nav');
-        if (topNav) {
-            topNav.style.display = 'none';
-        }
-        if (moreInfo && moreInfo.children.length > 0) {
+        var list = document.querySelectorAll("g-header-menu a.q.qs");
+        if (list.length > 0) {
             clearInterval(interval);
-            setEevnt(sortList);
-            tabSort(sortList);
+            var tabs = {};
+            // アンカーを入れほかのタブと同じ状態にする
+            var selectTab = document.querySelector('#hdtb-msb .hdtb-msel');
+            var selectText = selectTab.innerText;
+            selectTab.innerText = '';
+            // アンカーの作成
+            var selectAncer = document.createElement('a');
+            selectAncer.innerText = selectText;
+            selectAncer.classList.add('q', 'qs');
+            selectAncer.href = '/search' + location.search;
+            selectTab.appendChild(selectAncer);
+            selectTab.classList.remove('hdtb-msel');
+            var parents = [];
+            // タブ名?をキーにしてそれぞれのDOMを
+            [].slice.call(document.querySelectorAll('#hdtb-msb .hdtb-mitem a.q.qs')).map(function(item) {
+                var url = new URL(item.href);
+                var key = url.searchParams.get("tbm") || (url.hostname.indexOf("map") != -1 ? "map" : "all");
+                tabs[key] = item;
+                parents.push(item.parentElement);
+            });
+
+            // 並び替える
+            var n = 0;
+            sortList.forEach(function(data) {
+                var p = tabs[data].parentNode;
+                var c = parents[n].firstChild;
+                parents[n++].firstChild.replaceWith(tabs[data]);
+                p.appendChild(c);
+            });
+
+            // スタイルを合わせる
+            var menuStyle = document.querySelector('#hdtb-msb a.q.qs[data-ved]').className.split(' ').filter(function(name) {
+                return name !== 'q' && name !== 'qs'
+            }).pop();
+            var highlightStyle = [].slice.call(document.styleSheets).reduce(function(a, b) {
+                return a.concat([].slice.call(b.rules));
+            }, []).filter(function(css) {
+                return ("" + css.selectorText).indexOf('highlighted') != -1 && (("" + css.selectorText).split('.').length - 1) == 1;
+            }).pop().selectorText.substr(1);
+            [].slice.call(document.querySelectorAll('#hdtb-msb .hdtb-imb a.q.qs')).map(function(dom) {
+                dom.classList.remove(menuStyle);
+            });
+            [].slice.call(document.querySelectorAll('#hdtb-msb g-header-menu a.q.qs')).map(function(dom) {
+                dom.classList.add(menuStyle);
+                dom.addEventListener('mouseover', function() {
+                    this.classList.toggle(highlightStyle);
+                });
+                dom.addEventListener('mouseout', function() {
+                    this.classList.toggle(highlightStyle);
+                })
+            });
+
+            var select = tabs[(new URL(location.href)).searchParams.get('tbm') || 'all'].closest('.hdtb-imb');
+            if(select){
+                select.classList.add('hdtb-msel');
+                select.firstChild.replaceWith(select.textContent);
+            }
         }
     }, 10);
     setTimeout(function() {
